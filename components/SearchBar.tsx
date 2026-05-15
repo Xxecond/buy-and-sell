@@ -1,4 +1,4 @@
- function SearchBar({ setSearchTerm }) {
+function SearchBar({ setSearchTerm }: { setSearchTerm: (value: string) => void }) {
   return (
     <div className=" flex justify-end mt-5 pr-5">
       <input
