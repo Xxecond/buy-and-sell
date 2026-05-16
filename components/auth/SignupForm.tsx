@@ -2,65 +2,69 @@
 
 import { useState } from "react";
 import { useAuth } from "@/contexts/authContext";
+import { Button } from "@/components/ui";
 
-
-export default function SignupForm() {
-  const { signup, loading } = useAuth();
-  const [name, setName] = useState("");
+export default function SignupForm(){
+  const {signup, loading} = useAuth();
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState("")
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
+  
+  const handleSubmit = async (e: React.FormEvent) =>{
+  e.preventDefault();
+  setError("");
 
-    try {
-      await signup(name, email, password);
-      window.location.href = "/"; 
-    } catch (err: unknown) {
-      const error = err as {message?: string};
-      setError(error.message || "Login failed")
-    }
-}
+  try{
+   await signup(name, email, password);
 
+   window.location.href = "/dashboard";
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
-      <input
-        type="text"
-        placeholder="Full Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full p-3 border rounded"
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full p-3 border rounded"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full p-3 border rounded"
-        required
-      />
+  } catch(err: unknown){
+    setError(typeof err === "string" ? err : "Login failed")
+  }
+  }
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+  return(
+    <form onSubmit={handleSubmit} className="  w-5/6 flex flex-col  space-y-5">
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-green-600 text-white p-3 rounded disabled:bg-gray-400"
-      >
-        {loading ? "Creating account..." : "Sign Up"}
-      </button>
+      <input 
+      type="text"
+       value={name}
+      placeholder="Enter Name"
+      onChange={(e) => setName(e.target.value)}
+      className="ring-black ring focus:ring-2 p-3"
+      required
+       />
+
+       <input 
+       type="text"
+       placeholder="enter email"
+       value={email}
+       onChange={(e) => setEmail(e.target.value)}
+       className="ring-black ring focus:ring-2 p-3"
+       required
+       />
+
+       <input
+       type="password"
+       placeholder="enter password"
+       value={password}
+       onChange={(e)=> setPassword(e.target.value)}
+       className="ring-black ring focus:ring-2 p-3"
+       required
+       />
+
+       {error && <p>{error}</p>}
+
+      <Button 
+      variant="special"
+      disabled={loading}
+      className="w-full"
+      >{loading? "loading": "signup"}</Button>
+
     </form>
-  );
+  )
+
 }

@@ -17,6 +17,7 @@ export default function LoginForm({ className }: { className?: string }) {
     try {
       await login(email, password);
       // success, you can redirect here if you want
+     
       window.location.href = "/dashboard";  // or use router
     } catch (err: unknown) {
       setError(typeof err === "string" ? err : "Login failed");

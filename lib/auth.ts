@@ -24,7 +24,7 @@ export const loginUser = async (email: string, password: string) =>{
 
 export const signupUser = async (name: string, email: string, password: string) =>{
     try{
-    const signup = await api.post<LoginResponse>("/users/signup", 
+    const signup = await api.post<LoginResponse>("/api/users/signup", 
         {name, email, password}
     )
     const {token, user} = signup.data;
