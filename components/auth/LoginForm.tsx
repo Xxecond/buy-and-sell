@@ -36,20 +36,20 @@ export default function LoginForm({ className }: LoginFormProps) {
       <label className="text-sm md:text-base">Email</label>
       <input
         type="email"
-        placeholder="Email"
+        placeholder="Mumuniyussif9@gmail.com"
         value={email}
         onChange={(e) => setEmail(e.target.value.toLowerCase())}
-        className="ring-black ring focus:ring-2 p-2 rounded-lg w-full text-sm md:text-base xl:text-lg"
+        className="block focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg w-full"
         required
       />
       <label className="text-sm md:text-base">Password</label>
-      <div className="relative">
+      <div aria-label="pd-section" className="relative">
       <input
         type={showPassword ? "text" : "password"}
         placeholder="•••••••••••••"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="ring-black ring focus:ring-2 p-2 rounded-lg w-full text-sm md:text-base xl:text-lg"
+        className="block focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg w-full"
         required
       />
       <button 

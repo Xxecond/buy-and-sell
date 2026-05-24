@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/contexts/authContext";
 import { Button } from "@/components/ui";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function SignupForm(){
@@ -10,6 +11,7 @@ export default function SignupForm(){
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false)
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("")
   const passwordMatch = password === confirmPassword;
@@ -41,42 +43,56 @@ export default function SignupForm(){
       <input 
       type="text"
        value={name}
-      placeholder="Enter Name"
+      placeholder="Yussif Mumuni"
       onChange={(e) => setName(e.target.value)}
-      className="ring-black ring focus:ring-2 p-2 rounded-lg text-sm md:text-base "
+      className="block focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg"
       required
        />
 
        <label className=" m-0">Email</label>
        <input 
        type="text"
-       placeholder="enter email"
+       placeholder="Mumuniyussif@gmail.com"
        value={email}
        onChange={(e) => setEmail(e.target.value.toLowerCase())}
-       className="ring-black ring focus:ring-2 p-2 rounded-lg text-sm md:text-base "
+       className="block focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg"
        required
        />
        <label className=" m-0">Password</label>
-       <input
-       type="password"
-       placeholder="•••••••••••••"
-       value={password}
-       onChange={(e)=> setPassword(e.target.value)}
-       className="ring-black ring focus:ring-2 p-2 rounded-lg text-sm md:text-base "
-       required
-       />
+      <div aria-label="pd-section-1" className="relative">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="•••••••••••"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className="block focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg w-full "
+        required
+      />
+      <button 
+      onClick={() =>setShowPassword(!showPassword)}
+      className="text-black absolute translate-x-1/2 right-10 top-1/2 -translate-y-1/2 ">
+        {showPassword ? <EyeIcon className="w-6 h-6 md:w-8 md:h-8" />:<EyeOffIcon className="w-6 h-6 md:w-8 md:h-8"/>}
+      </button>
+      </div>
 
        <div>
 
         <label className=" m-0">Confirm Password</label>
-       <input 
-       type="text"
-       placeholder = "•••••••••••••" 
-       value={confirmPassword}
-       onChange={((e) => setConfirmPassword(e.target.value))}
-       className="ring-black ring focus:ring-2 p-2 rounded-lg w-full text-sm md:text-base"
-       />
-
+      <div aria-label="pd-section-2" className="relative">
+      <input
+        type={showPassword ? "text" : "password"}
+        placeholder="••••••••••••"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        className=" block ring-black ring focus:outline-none focus:ring-2 p-2 rounded-lg w-full"
+        required
+      />
+      <button 
+      onClick={() =>setShowPassword(!showPassword)}
+      className="text-black absolute translate-x-1/2 right-10 top-1/2 -translate-y-1/2 ">
+        {showPassword ? <EyeIcon className="w-6 h-6 md:w-8 md:h-8" />:<EyeOffIcon className="w-6 h-6 md:w-8 md:h-8"/>}
+      </button>
+      </div>
         </div>
        
        <div className="flex space-x-3">

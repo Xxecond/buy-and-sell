@@ -61,8 +61,8 @@ export const logoutUser =() =>{
 
 export const getStoredUser = (): User | null => {
     if (!isClient) return null;
+   
     try{
-
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
     } catch{

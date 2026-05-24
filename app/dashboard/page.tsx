@@ -4,8 +4,9 @@ import { useAuth } from "@/contexts/authContext";
 import { useState } from "react";
 
 export default function  Dashboard (){
-    const {logout} = useAuth();
-    const [error, setError] = useState("")
+    const {logout, user} = useAuth();
+    const [error, setError] = useState("");
+    const firstName = user?.name?.trim().split(" ")[0] || [" "]
 
  const handleLogout = async () =>{
     setError("")
@@ -21,6 +22,7 @@ export default function  Dashboard (){
     return(
         <>
         <div className="flex items-center justify-center h-screen w-full bg-green-900">
+         <div><h1>{`hello ${firstName} how are you`}</h1></div>
            {error && <p>{error}</p>}
             <Button 
             onClick={handleLogout}

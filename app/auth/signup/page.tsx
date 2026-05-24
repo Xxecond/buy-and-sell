@@ -1,9 +1,9 @@
 "use client"
 import Link from "next/link";
 import { ArrowLeftSquareIcon } from "lucide-react";
-import { Facebook } from "lucide-react";
-import { X } from "lucide-react";
-import { Apple } from "lucide-react";
+import { FaFacebook } from "react-icons/fa6";
+import { FaXTwitter } from "react-icons/fa6";
+import { FcGoogle } from "react-icons/fc";
 
 import Image from "next/image";
 
@@ -31,23 +31,23 @@ export default function signUpPage(){
                   <div className=" absolute flex flex-col space-y-6 items-center  h-[3vh] bottom-25 w-[70%] md:w-[79%]">
                     <div className="flex items-center justify-end w-full ">
                     <p className="flex-2 bg-emerald-600 h-1  "></p>
-                    <p className=" px-4  whitespace-nowrap text-xs md:text-sm">PLEASE DON'T JUDGE</p>
+                    <p className=" px-4  whitespace-nowrap text-xs md:text-sm">OR LOGIN WITH</p>
                     <p className="flex-2 bg-emerald-600 h-1 "></p>
                     </div>
                     <nav className=" w-full flex items-center justify-center h-15 space-x-10 md:space-x-12">
-                    <div className="flex flex-col items-center justify-center">
-                    <div className="w-15 h-10 md:w-18 md:h-12  bg-blue-600 text-white rounded-lg flex justify-center items-center"><Facebook className="w-6 h-6 md:w-8 md:h-8 " /></div>
-                    <p className="text-sm md:text-base ">Facebook</p>
+                    <div arial-label="gg-section" className="flex flex-col items-center justify-center">
+                    <div className="w-15 h-10 md:w-18 md:h-12 bg-white border border-gray-400 text-white rounded-lg flex justify-center items-center"><FcGoogle className="w-6 h-6 md:w-8 md:h-8 "/></div>
+                    <p className="text-sm md:base">GOOGLE</p>
                     </div>
+                                        
                     <div className="flex flex-col items-center justify-center">
-                    <div className=" w-15 h-10 md:w-18 md:h-12  bg-black text-white  rounded-lg flex justify-center items-center"><X className="w-6 h-6 md:w-8 md:h-8" /></div>
+                    <div className=" w-15 h-10 md:w-18 md:h-12  bg-black text-white  rounded-lg flex justify-center items-center"><FaXTwitter className="w-6 h-6 md:w-8 md:h-8" /></div>
                     <p className="text-sm md:text-base ">X</p>
                     </div>
-                    <div className="flex flex-col items-center justify-center">
-                    <div className="w-15 h-10 md:w-18 md:h-12 bg-zinc-800 text-white rounded-lg flex justify-center items-center"><Apple className="w-6 h-6 md:w-8 md:h-8"/></div>
-                    <p className="text-sm md:text-base ">Apple</p>
-                    </div>
-                    </nav>
+                <div aria-label="fb-section" className="flex flex-col items-center justify-center">
+                 <div className="w-15 h-10 md:w-18 md:h-12  bg-blue-600 text-white rounded-lg flex justify-center items-center"><FaFacebook className="w-6 h-6 md:w-8 md:h-8 "/></div>
+                 <p className="text-sm md:base">FACEBOOK</p>
+                 </div></nav>
                  </div>
                  </section>
             </main>

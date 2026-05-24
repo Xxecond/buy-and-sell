@@ -1,9 +1,11 @@
-import Navbar from "@/components/Navbar";
-
+//import Navbar from "@/components/Navbar";
+import Slider from "@/components/CardSlider"
 
 export default function Testing(){
     return(
-        <div><Navbar mobile="icon" /></div>
+      <div>
+        <Slider />
+      </div>
     )
 
 }
