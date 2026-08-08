@@ -2,6 +2,7 @@ export type User = {
     id:number;
     email: string;
     name: string;
+    role: string;
 };
 
 export type LoginResponse = {
@@ -14,3 +15,16 @@ export type ApiError = {
     message?: string;
 };
 
+export type Layout = {
+    children: React.ReactNode;
+}
+
+export type CartItem = {
+  id:number;
+  name:string;
+  price:number;
+  size:string;
+  color:string;
+  quantity:number;
+  image:string;
+};

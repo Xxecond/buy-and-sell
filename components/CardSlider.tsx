@@ -1,37 +1,43 @@
 "use client"
 import Image from "next/image"
-import { useEffect, useState } from "react";
+import { Button } from "./ui";
+import { useState } from "react";
+import { getStoredUser } from "@/lib";
 
+function HeroSection (){
+    const [showImage, setShowImage] = useState(false);
+    const hey = getStoredUser();
+    const firstName = hey?.email?.trim().split("@")[1] || " "
+    
+    function handleClick (){
+
+    }
+    return(
+        <section className="h-50vh absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-red-900 w-[50%]">
+            <div arial-label="img+brand name" className="flex gap-9 text-white">
+        <div className="relative h-10 w-20 bg-black">
+            <Image 
+            src="/assets/logo.JPG"
+            alt="logo-pic"
+            fill
+            className="object-contain" />
+            </div>
+            <p className="font-black text-lg">TonaTon</p>
+            <div className="bg-white text-black text-center flex items-center rounded-full  h-12 w-15">{firstName}</div>
+            <Button
+            variant="special" onClick={(() =>setShowImage(!showImage))}>Click</Button>
+            </div>
+        {showImage? <div>you not authorized for this</div>:<p>fuck you</p>}
+        {}
+        </section>
+    )
+}
+    
 export default function Slider (){
-const [index, setIndex] = useState(0);
-    const  cards = [
-        {id:1, image:"/assets/bok.png"},
-        {id:2, image:"/assets/bncPic.JPG"},
-        {id:3, image:"/assets/logo.JPG"},
-    ]
-
-    useEffect(() =>{
-        const interval = setInterval(()=> {
-            setIndex((prev) => (prev + 1) % cards.length);
-        }, 5000);
-
-        return  () => clearInterval(interval);
-    }, [])
-  
-        return(
-        <div className="overflow-hidden w-full h-75 relative">
-            <ol className="slider-track flex h-full"
-                style={{ "--index": index } as React.CSSProperties} >
-                {[...cards, ...cards].map((card, i) =>(
-                    <li key={i}
-                    className="max-w-[50%] h-65 bg-red-900 text-white flex items-center justify-center rounded-xl"
-                    ><div>
-                    <Image
-                    src={card.image}
-                    alt="cards-img" 
-                    fill/></div></li>))}
-            </ol>
-
+    return(
+        <div>
+            <HeroSection  />
         </div>
     )
+
 }

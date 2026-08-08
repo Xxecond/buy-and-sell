@@ -17,7 +17,7 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
   const isAuthPage = pathname?.startsWith("/auth");
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       {!isAuthPage && (
         <Header
           onMenuClick={() => setShowMenu(true)}
@@ -26,9 +26,14 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
       )}
       <HamburgerMenu isOpen={showMenu} onClose={() => setShowMenu(false)} />
       <SearchOverlay isOpen={showSearch} onClose={() => setShowSearch(false)} />
-      <main className={!isAuthPage ? "pb-20" : ""}>{children}</main>
+      
+      {/* Main content area */}
+      <main className={`flex-1`}>
+        {children}
+      </main>
+      
       {!isAuthPage && <BottomNav />}
-    </>
+    </div>
   );
 }
 

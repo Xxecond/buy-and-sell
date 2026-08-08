@@ -8,8 +8,8 @@ interface SearchOverlayProps {
   onClose: () => void;
 }
 
-const recentSearches = ["Sofa Chair", "iPhone 15", "Samsung Fridge"];
-const popularSearches = ["Laptops", "Fashion", "Speakers", "Cars", "Phones"];
+const recentSearches = ["White T-Shirt", "Black Jeans", "Running Sneakers"];
+const popularSearches = ["T-Shirts", "Hoodies", "Jeans", "Sneakers", "Watches", "Jackets"];
 
 export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const [query, setQuery] = useState("");
@@ -23,7 +23,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         <input
           autoFocus
           type="search"
-          placeholder="Search products..."
+          placeholder="Search clothing..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="flex-1 outline-none text-gray-800 text-base"
@@ -46,7 +46,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <p className="text-xs font-semibold text-gray-400 uppercase mb-3">Popular Searches</p>
           <div className="flex flex-wrap gap-2">
             {popularSearches.map((s) => (
-              <button key={s} className="px-3 py-1.5 bg-indigo-50 rounded-full text-sm text-indigo-600">
+              <button key={s} className="px-3 py-1.5 bg-emerald-50 rounded-full text-sm text-emerald-700">
                 {s}
               </button>
             ))}

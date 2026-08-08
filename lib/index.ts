@@ -6,6 +6,4 @@ export {
   loginUser,
   signupUser,
   logoutUser,
-  saveAuth,
-  getStoredUser,
 } from './auth'

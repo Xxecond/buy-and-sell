@@ -1,72 +1,146 @@
 import api from "./api";
-import {User, LoginResponse} from "./type"
+import { User } from "./type";
+import { AxiosError } from "axios";
 
-
-const isClient = typeof window !== "undefined";
-
-export const loginUser = async (email: string, password: string) =>{
-    try{
-    const login = await api.post<LoginResponse>("/api/users/login", 
-        {email, password}
-    )
-    const {token, user} = login.data
-    saveAuth(token, user)
-
-
-    return login.data
-    }
-    catch(error: unknown){
-        console.error("Login error", error);
-        const err = error as {response?: {data?: {error?: string}}};
-        throw err?.response?.data?.error || "Login failed";
-    }
-}
-
-export const signupUser = async (name: string, email: string, password: string) =>{
-    try{
-    const signup = await api.post<LoginResponse>("/api/users/signup", 
-        {name, email, password}
-    )
-    const {token, user} = signup.data;
-
-    saveAuth(token, user)
-
-    return signup.data;
-}
-    catch(error: unknown){
-        console.error("signup error", error);
-        const err = error as {response?: {data?: {error?: string}}};
-        throw err?.response?.data?.error || "signup failed";
-    }
+export type LoginResponse = {
+  message: string;
+  user: User;
 };
 
-export const saveAuth = (token: string, user: User) =>{
-    if(!isClient) return;
+export type SignupResponse = {
+  message: string;
+};
 
-    try{
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-}
-catch(error){
-    console.log("failed to save auth", error);
+export type ResendVerificationResponse = {
+  message: string;
+};
+
+// LOGIN
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    const response = await api.post<LoginResponse>(
+      "/api/users/login",
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      },
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    console.error("Login error", error);
+
+    if (error instanceof AxiosError) {
+      throw (
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Login failed"
+      );
+    }
+
+    throw "Login failed";
   }
-}
+};
 
-export const logoutUser =() =>{
-    if (!isClient) return;
+// SIGNUP
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-}
+export const signupUser = async (
+  name: string,
+  email: string,
+  password: string,
+) => {
+  try {
+    const response = await api.post<SignupResponse>("/api/users/signup", {
+      name,
+      email,
+      password,
+    });
 
-export const getStoredUser = (): User | null => {
-    if (!isClient) return null;
-   
-    try{
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
-    } catch{
-        localStorage.removeItem("user");
-        return null;
-    }}
+    return response.data;
+  } catch (error: unknown) {
+    console.error("Signup error", error);
 
+    if (error instanceof AxiosError) {
+      throw (
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Signup failed"
+      );
+    }
+
+    throw "Signup failed";
+  }
+};
+
+// RESEND VERIFICATION EMAIL
+
+export const resendVerificationEmail = async (email: string) => {
+  try {
+    const response = await api.post<ResendVerificationResponse>(
+      "/api/users/resendVerification",
+      {
+        email,
+      },
+    );
+
+    return response.data;
+  } catch (error: unknown) {
+    console.error("Resend verification error", error);
+
+    if (error instanceof AxiosError) {
+      throw (
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        "Failed to resend verification email"
+      );
+    }
+
+    throw "Failed to resend verification email";
+  }
+};
+
+// LOGOUT
+
+export const logoutUser = async () => {
+  await api.post(
+    "/api/users/logout",
+    {},
+    {
+      withCredentials: true,
+    },
+  );
+};
+
+// GET CURRENT USER
+
+export const getCurrentUser = async () => {
+  try {
+    const response = await api.get<User>("/api/users/me", {
+      withCredentials: true,
+    });
+
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      const status = error.response?.status;
+      const message = (error.response?.data as { message?: string } | undefined)
+        ?.message?.toLowerCase() || "";
+
+      if (
+        status === 401 ||
+        status === 403 ||
+        message.includes("unauthorized") ||
+        message.includes("not authenticated") ||
+        message.includes("token")
+      ) {
+        throw new Error("Session expired or invalid");
+      }
+    }
+
+    return null;
+  }
+};
