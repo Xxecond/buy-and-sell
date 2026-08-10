@@ -2,35 +2,57 @@
 import Image from "next/image"
 import { Button } from "./ui";
 import { useState } from "react";
-import { getStoredUser } from "@/lib";
+import {  } from "@/lib/auth";
+import { useAuth } from "@/contexts/authContext";
 
-function HeroSection (){
-    const [showImage, setShowImage] = useState(false);
-    const hey = getStoredUser();
-    const firstName = hey?.email?.trim().split("@")[1] || " "
-    
-    function handleClick (){
+function HeroSection (){ const [showImage, setShowImage] = useState(false);
 
-    }
-    return(
-        <section className="h-50vh absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-red-900 w-[50%]">
-            <div arial-label="img+brand name" className="flex gap-9 text-white">
+  const { user, loading } = useAuth();
+
+  const firstName = user?.name?.trim().split(" ")[0] || "";
+
+  function handleClick() {
+    setShowImage((prev) => !prev);
+  }
+
+  return (
+    <section className="h-[50vh] absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 bg-red-900 w-[50%]">
+      <div
+        aria-label="img and brand name"
+        className="flex items-center gap-9 text-white"
+      >
+        {/* Logo */}
         <div className="relative h-10 w-20 bg-black">
-            <Image 
+          <Image
             src="/assets/logo.JPG"
-            alt="logo-pic"
+            alt="TonaTon logo"
             fill
-            className="object-contain" />
-            </div>
-            <p className="font-black text-lg">TonaTon</p>
-            <div className="bg-white text-black text-center flex items-center rounded-full  h-12 w-15">{firstName}</div>
-            <Button
-            variant="special" onClick={(() =>setShowImage(!showImage))}>Click</Button>
-            </div>
-        {showImage? <div>you not authorized for this</div>:<p>fuck you</p>}
-        {}
-        </section>
-    )
+            className="object-contain"
+          />
+        </div>
+
+        {/* Brand name */}
+        <p className="font-black text-lg">TonaTon</p>
+
+        {/* User */}
+        <div className="bg-white text-black text-center flex items-center justify-center rounded-full h-12 w-20">
+          {loading ? "..." : firstName || "Guest"}
+        </div>
+
+        {/* Button */}
+        <Button variant="special" onClick={handleClick}>
+          Click
+        </Button>
+      </div>
+
+      {/* Content */}
+      {showImage ? (
+        <div>you not authorized for this</div>
+      ) : (
+        <p>fuck you</p>
+      )}
+    </section>
+  );
 }
     
 export default function Slider (){
