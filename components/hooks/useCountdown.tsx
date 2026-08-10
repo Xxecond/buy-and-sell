@@ -1,33 +1,65 @@
-"use client"
+"use client";
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect } from "react";
 
 export default function useCountdown(initial = 60) {
-  const [countdown, setCountdown] = useState(0)
-  const timerRef = useRef(null)
+  const [countdown, setCountdown] = useState(0);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
 
   const startCountdown = () => {
-    setCountdown(initial)
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+
+
+    setCountdown(initial);
+
 
     timerRef.current = setInterval(() => {
-      setCountdown(prev => {
+
+      setCountdown((prev) => {
+
         if (prev <= 1) {
-          clearInterval(timerRef.current)
-          return 0
+
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
+
+          return 0;
         }
 
-        return prev - 1
-      })
-    }, 1000)
-  }
+
+        return prev - 1;
+
+      });
+
+    }, 1000);
+
+  };
+
+
 
   useEffect(() => {
-    return () => clearInterval(timerRef.current)
-  }, [])
+
+    return () => {
+
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
+    };
+
+  }, []);
+
+
 
   return {
     countdown,
     startCountdown,
-    canResend: countdown === 0
-  }
+    canResend: countdown === 0,
+  };
 }

@@ -41,31 +41,36 @@ export default function signUpPage() {
               <p className="flex-2 bg-emerald-600 h-1 "></p>
             </div>
             <nav className=" w-full flex items-center justify-center h-15 space-x-10 md:space-x-12">
+              <a href="">
               <div
                 arial-label="gg-section"
-                className="flex flex-col items-center justify-center"
+                className="cursor-pointer flex flex-col items-center justify-center"
               >
-                <div className="w-15 h-10 md:w-18 md:h-12 bg-white border border-gray-400 text-white rounded-lg flex justify-center items-center">
+                <div className=" w-15 h-10 md:w-18 md:h-12 bg-white border border-gray-400 text-white rounded-lg flex justify-center items-center">
                   <FcGoogle className="w-6 h-6 md:w-8 md:h-8 " />
                 </div>
                 <p className="text-sm md:base">GOOGLE</p>
               </div>
-
-              <div className="flex flex-col items-center justify-center">
+              </a>
+              <a href="">
+              <div className="cursor-pointer flex flex-col items-center justify-center">
                 <div className=" w-15 h-10 md:w-18 md:h-12  bg-black text-white  rounded-lg flex justify-center items-center">
                   <FaXTwitter className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
                 <p className="text-sm md:text-base ">X</p>
               </div>
+              </a>
+              <a href="">
               <div
                 aria-label="fb-section"
-                className="flex flex-col items-center justify-center"
+                className="cursor-pointer flex flex-col items-center justify-center"
               >
-                <div className="w-15 h-10 md:w-18 md:h-12  bg-blue-600 text-white rounded-lg flex justify-center items-center">
+                <div className=" w-15 h-10 md:w-18 md:h-12  bg-blue-600 text-white rounded-lg flex justify-center items-center">
                   <FaFacebook className="w-6 h-6 md:w-8 md:h-8 " />
                 </div>
                 <p className="text-sm md:base">FACEBOOK</p>
               </div>
+              </a>
             </nav>
           </div>
         </section>

@@ -313,12 +313,12 @@ function Footer() {
         </div>
         <div>
           <p className="text-white font-semibold mb-3">Contact</p>
-          <p className="text-xs lg:text-sm mb-2">📞 +234 800 123 4567</p>
+          <p className="text-xs lg:text-sm mb-2">📞 +233 531 467 213</p>
           <p className="text-xs lg:text-sm mb-2">✉️ support@shoply.com</p>
-          <p className="text-xs lg:text-sm mb-2">📍 Lagos, Nigeria</p>
+          <p className="text-xs lg:text-sm mb-2">📍 Accra, Ghana</p>
         </div>
       </div>
-      <p className="text-xs text-center border-t border-gray-700 pt-6">© 2024 Shoply. All rights reserved.</p>
+      <p className="text-xs text-center border-t border-gray-700 pt-6"> © {new Date().getFullYear()} Shoply. All rights reserved.</p>
     </footer>
   );
 }

@@ -43,8 +43,8 @@ export default function ResendForm() {
     }
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="w-full flex flex-col space-y-5">
+    <div className="w-full">
+      <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
         <p className="text-sm text-gray-600 text-center ">
           Enter email for verification link.
         </p>
