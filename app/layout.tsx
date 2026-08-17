@@ -2,6 +2,9 @@
 
 import "../styles/globals.css";
 import { AuthProvider } from "@/contexts/authContext";
+import { CartProvider } from "@/contexts/cartContext";
+import { WishlistProvider } from "@/contexts/wishlistContext";
+import { useCart } from "@/contexts/cartContext";
 import Header from "@/components/layout/Header";
 import HamburgerMenu from "@/components/layout/HamburgerMenu";
 import SearchOverlay from "@/components/layout/SearchOverlay";
@@ -15,6 +18,7 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   const isAuthPage = pathname?.startsWith("/auth");
+  const { cartCount } = useCart();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -22,6 +26,7 @@ function LayoutShell({ children }: { children: React.ReactNode }) {
         <Header
           onMenuClick={() => setShowMenu(true)}
           onSearchClick={() => setShowSearch(true)}
+          cartCount={cartCount}
         />
       )}
       <HamburgerMenu isOpen={showMenu} onClose={() => setShowMenu(false)} />
@@ -42,7 +47,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="bg-gray-50">
         <AuthProvider>
-          <LayoutShell>{children}</LayoutShell>
+          <CartProvider>
+            <WishlistProvider>
+              <LayoutShell>{children}</LayoutShell>
+            </WishlistProvider>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

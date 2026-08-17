@@ -85,12 +85,13 @@ export const checkVerification = async (deviceId: string) => {
 
 // RESEND VERIFICATION EMAIL
 
-export const resendVerificationEmail = async (email: string) => {
+export const resendVerificationEmail = async (email: string, deviceId: string) => {
   try {
     const response = await api.post<ResendVerificationResponse>(
       "/api/users/resendVerification",
       {
         email,
+        deviceId,
       },
     );
 

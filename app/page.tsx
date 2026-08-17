@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Star, Heart, Truck, ShieldCheck, Package, Mail, Facebook, Instagram, Twitter, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWishlist } from "@/contexts/wishlistContext";
+import { useCart } from "@/contexts/cartContext";
 
 // --- Hero Slider ---
 const heroSlides = [
@@ -142,7 +144,8 @@ const products = [
 ];
 
 function FeaturedProducts() {
-  const [liked, setLiked] = useState<number[]>([]);
+  const { toggleWishlist, isWishlisted } = useWishlist();
+  const { addToCart } = useCart();
 
   return (
     <section className="px-4 lg:px-20 py-6">
@@ -156,10 +159,10 @@ function FeaturedProducts() {
             <div className="relative bg-gray-100 h-36 lg:h-48 flex items-center justify-center">
               <span className="text-4xl lg:text-5xl">👕</span>
               <button
-                onClick={() => setLiked((prev) => prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i])}
+                onClick={() => toggleWishlist({ id: i, name: p.name, price: parseInt(p.price.replace(/[^0-9]/g, "")), size: "", color: "", quantity: 1, image: "" })}
                 className="absolute top-2 right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm"
               >
-                <Heart size={16} className={liked.includes(i) ? "fill-red-500 text-red-500" : "text-gray-400"} />
+                <Heart size={16} className={isWishlisted(i) ? "fill-red-500 text-red-500" : "text-gray-400"} />
               </button>
             </div>
             <div className="p-3 lg:p-4">
@@ -170,7 +173,12 @@ function FeaturedProducts() {
                   <Star size={12} className="fill-yellow-400 text-yellow-400" />
                   <span className="text-xs text-gray-500">{p.rating} ({p.reviews})</span>
                 </div>
-                <Button size="sm" className="hidden lg:block" variant="default">
+                <Button
+                  size="sm"
+                  className="hidden lg:block"
+                  variant="default"
+                  onClick={() => addToCart({ id: i, name: p.name, price: parseInt(p.price.replace(/[^0-9]/g, "")), size: "", color: "", quantity: 1, image: "" })}
+                >
                   Add to Cart
                 </Button>
               </div>
