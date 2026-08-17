@@ -52,7 +52,7 @@ export default function signUpPage() {
                 <p className="text-sm md:base">GOOGLE</p>
               </div>
               </a>
-              <a href="">
+              <a href="/api/auth/google">
               <div className="cursor-pointer flex flex-col items-center justify-center">
                 <div className=" w-15 h-10 md:w-18 md:h-12  bg-black text-white  rounded-lg flex justify-center items-center">
                   <FaXTwitter className="w-6 h-6 md:w-8 md:h-8" />

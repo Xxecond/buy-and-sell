@@ -26,7 +26,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           placeholder="Search clothing..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 outline-none text-gray-800 text-base"
+          className="flex-1 outline-none text-gray-800 "
         />
         <button onClick={onClose}><X size={22} className="text-gray-600" /></button>
       </div>

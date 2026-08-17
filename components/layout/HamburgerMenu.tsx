@@ -4,6 +4,7 @@ import { X, LogOut } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/authContext";
+import { Button } from "@/components/ui/button";
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -27,8 +28,8 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex">
-          <div className="bg-white relative w-72 h-full shadow-xl flex flex-col p-6 gap-2">
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          <div className="bg-white relative w-3/5 h-full shadow-xl flex flex-col p-6 gap-2">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2 font-bold text-xl text-emerald-700">
                 <Image
@@ -49,15 +50,15 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className="py-3 border-b border-gray-100 text-gray-700 font-medium hover:text-emerald-700 transition"
+                className="py-2 border-b border-gray-100 text-gray-700 font-medium hover:text-emerald-700 transition"
               >
                 {link.label}
               </Link>
             ))}
-            <div className="absolute w-[80%] bottom-25 flex flex-col gap-3">
+            <div className="absolute w-[80%] bottom-23 flex flex-col gap-3">
               {user ? (
                 <>
-                {user.role === "seller" && (
+                  {user.role === "seller" && (
                     <Link
                       href="/seller/dashboard"
                       onClick={onClose}
@@ -79,19 +80,13 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
                 </>
               ) : (
                 <>
-                  <Link
-                    href="/auth/login"
-                    onClick={onClose}
-                    className="w-full text-center py-3 border border-emerald-700 text-emerald-700 rounded-xl font-semibold"
-                  >
-                    Login
+                  <Link href="/auth/login" onClick={onClose}>
+                    <Button variant="outline">Login</Button>
                   </Link>
-                  <Link
-                    href="/auth/signup"
-                    onClick={onClose}
-                    className="w-full text-center py-3 bg-emerald-700 text-white rounded-xl font-semibold"
-                  >
-                    Sign Up
+                  <Link href="/auth/signup" onClick={onClose}>
+                    <Button variant="special" className="w-full">
+                      Sign Up
+                    </Button>
                   </Link>
                 </>
               )}

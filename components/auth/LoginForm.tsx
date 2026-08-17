@@ -53,6 +53,7 @@ export default function LoginForm({ className }: LoginFormProps) {
           required
         />
         <button
+          type="button"
           onClick={() => setShowPassword(!showPassword)}
           className="text-black absolute translate-x-1/2 right-10 top-1/2 -translate-y-1/2 "
         >

@@ -252,23 +252,22 @@ function Reviews() {
 function Newsletter() {
   const [email, setEmail] = useState("");
   return (
-    <section className="mx-4 lg:mx-20 my-6 bg-emerald-700 rounded-2xl p-6 lg:p-10 flex flex-col lg:flex-row items-center justify-between gap-4">
-      <div className="flex items-center gap-4">
-        <Mail size={36} className="text-white shrink-0" />
+    <section className="flex bg-gray-200 rounded-2xl p-2 text-black items-center gap-3 ">
+      <div className="  flex items-center gap-2">
+        <Mail size={36} className=" text-white bg-emerald-700 px-1 shrink-0" />
         <div>
-          <p className="text-white font-bold text-base lg:text-xl">Get Style Updates</p>
-          <p className="text-emerald-200 text-xs lg:text-sm">Subscribe for exclusive fashion deals and new arrivals!</p>
+          <p className="font-bold text-xs md:text-sm ">Get Exclusive Deals</p>
         </div>
       </div>
-      <div className="flex gap-2 w-full lg:w-auto lg:min-w-[400px]">
+      <div className= "flex gap-2">
         <input
           type="email"
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 px-4 py-3 rounded-xl text-sm outline-none"
+          className="w-3/4  focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg"
         />
-        <Button variant="secondary" className="whitespace-nowrap">
+        <Button variant="special" className=" whitespace-nowrap">
           Subscribe
         </Button>
       </div>

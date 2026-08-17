@@ -12,7 +12,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ 
   children, 
-  requiredRole = "buyer", 
+  requiredRole, 
   redirectTo = "/auth/login" 
 }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
@@ -25,9 +25,8 @@ export default function ProtectedRoute({
         return;
       }
 
-      // Check role if specified
       if (requiredRole && user.role !== requiredRole && user.role !== "admin") {
-        router.push("/"); // Redirect to home if wrong role
+        router.push("/");
         return;
       }
     }

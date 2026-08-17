@@ -6,9 +6,24 @@ export type User = {
 };
 
 export type LoginResponse = {
-    token: string,
-    user: User;
-};  
+  message: string;
+  user: User;
+};
+
+export type SignupResponse = {
+  message: string;
+};
+
+export type CheckVerificationResponse = {
+  verified: boolean;
+  token?: string;
+  user?: User;
+};
+
+export type ResendVerificationResponse = {
+  message: string;
+};
+
 
 export type ApiError = {
     error?: string;

@@ -1,19 +1,6 @@
 import api from "./api";
-import { User } from "./type";
+import { User, LoginResponse, ResendVerificationResponse, CheckVerificationResponse, SignupResponse } from "./type";
 import { AxiosError } from "axios";
-
-export type LoginResponse = {
-  message: string;
-  user: User;
-};
-
-export type SignupResponse = {
-  message: string;
-};
-
-export type ResendVerificationResponse = {
-  message: string;
-};
 
 // LOGIN
 
@@ -52,12 +39,14 @@ export const signupUser = async (
   name: string,
   email: string,
   password: string,
+  deviceId: string,
 ) => {
   try {
     const response = await api.post<SignupResponse>("/api/users/signup", {
       name,
       email,
       password,
+      deviceId,
     });
 
     return response.data;
@@ -73,6 +62,24 @@ export const signupUser = async (
     }
 
     throw "Signup failed";
+  }
+};
+
+// CHECK VERIFICATION STATUS (polling)
+
+export const checkVerification = async (deviceId: string) => {
+  try {
+    const response = await api.get<CheckVerificationResponse>(
+      `/api/users/check-verification?device_id=${encodeURIComponent(deviceId)}`,
+      { withCredentials: true },
+    );
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError && error.response?.status === 202) {
+      // 202 = still pending, not an error
+      return { verified: false } as CheckVerificationResponse;
+    }
+    return { verified: false } as CheckVerificationResponse;
   }
 };
 
@@ -129,16 +136,6 @@ export const getCurrentUser = async () => {
       const status = error.response?.status;
       const message = (error.response?.data as { message?: string } | undefined)
         ?.message?.toLowerCase() || "";
-
-      if (
-        status === 401 ||
-        status === 403 ||
-        message.includes("unauthorized") ||
-        message.includes("not authenticated") ||
-        message.includes("token")
-      ) {
-        throw new Error("Session expired or invalid");
-      }
     }
 
     return null;

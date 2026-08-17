@@ -8,25 +8,26 @@ import {
   ReactNode,
 } from "react";
 
-import { User } from "@/lib/type";
+import { User, SignupResponse, } from "@/lib/type";
 
 import {
   loginUser,
   signupUser,
   logoutUser,
   getCurrentUser,
-  SignupResponse,
-} from "@/lib/auth";
+  } from "@/lib/auth";
 
 type AuthContextType = {
   user: User | null;
-
   loading: boolean;
-
   login: (email: string, password: string) => Promise<void>;
-
-  signup: (name: string, email: string, password: string) => Promise<SignupResponse>;
-
+  signup: (
+    name: string,
+    email: string,
+    password: string,
+    deviceId: string,
+  ) => Promise<SignupResponse>;
+  loginWithToken: (userData: User) => void;
   logout: () => Promise<void>;
 };
 
@@ -36,7 +37,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const readStoredUser = (): User | null => {
   if (typeof window === "undefined") return null;
-
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as User) : null;
@@ -47,7 +47,6 @@ const readStoredUser = (): User | null => {
 
 const persistUser = (user: User | null) => {
   if (typeof window === "undefined") return;
-
   if (user) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
   } else {
@@ -57,14 +56,12 @@ const persistUser = (user: User | null) => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => readStoredUser());
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
       try {
         const currentUser = await getCurrentUser();
-
         if (currentUser) {
           persistUser(currentUser);
           setUser(currentUser);
@@ -77,10 +74,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : "";
+        const message = error instanceof Error ? error.message : "";
         console.error("Failed to restore auth session", message);
-
         persistUser(null);
         setUser(null);
       } finally {
@@ -93,11 +88,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     setLoading(true);
-
     try {
       const data = await loginUser(email, password);
       const authenticatedUser = data.user ?? (await getCurrentUser());
-
       if (authenticatedUser) {
         persistUser(authenticatedUser);
         setUser(authenticatedUser);
@@ -110,38 +103,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (
+    name: string,
+    email: string,
+    password: string,
+    deviceId: string,
+  ) => {
     setLoading(true);
-
     try {
-      const data = await signupUser(name, email, password);
-
+      const data = await signupUser(name, email, password, deviceId);
       return data;
     } finally {
       setLoading(false);
     }
   };
 
+  // Called by SignupForm polling once verification is confirmed
+  const loginWithToken = (userData: User) => {
+    persistUser(userData);
+    setUser(userData);
+  };
+
   const logout = async () => {
     await logoutUser();
-
     persistUser(null);
     setUser(null);
   };
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-
-        loading,
-
-        login,
-
-        signup,
-
-        logout,
-      }}
+      value={{ user, loading, login, signup, loginWithToken, logout }}
     >
       {children}
     </AuthContext.Provider>
@@ -150,10 +141,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-
   if (!context) {
     throw new Error("useAuth must be used inside AuthProvider");
   }
-
   return context;
 };

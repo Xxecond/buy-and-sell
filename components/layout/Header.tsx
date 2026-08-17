@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/authContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface HeaderProps {
   onSearchClick: () => void;
@@ -36,6 +36,9 @@ export default function Header({
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 lg:px-12 py-3 flex items-center justify-between">
@@ -56,7 +59,7 @@ export default function Header({
           height={32}
           className="rounded-lg"
         />
-        <span className="hidden sm:block">Shoply</span>
+        <span className="block">Shoply</span>
       </Link>
 
       {/* Desktop nav links */}
@@ -95,9 +98,9 @@ export default function Header({
         </Link>
 
         {/* User section */}
-        {user ? (
+        {mounted && user ? (
           // Logged-in user menu
-          <div className="relative">
+          <div className="relative hidden lg:block">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
               className="hidden lg:flex items-center gap-2 p-2 hover:bg-gray-50 rounded-xl transition"
@@ -110,14 +113,6 @@ export default function Header({
               <span className="text-sm font-medium text-gray-700">
                 {user.name?.split(" ")[0]}
               </span>
-            </button>
-
-            {/* Mobile user icon */}
-            <button
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="p-1 lg:hidden"
-            >
-              <User size={22} className="text-gray-700" />
             </button>
 
             {/* Dropdown menu - positioned to not conflict with footer */}
@@ -179,7 +174,7 @@ export default function Header({
         )}
 
         {/* Mobile login for guests */}
-        {!user && (
+        {mounted && !user && (
           <Link href="/auth/login" className="p-1 lg:hidden">
             <User size={22} className="text-gray-700" />
           </Link>
