@@ -1,122 +1,60 @@
 "use client";
 
-
 import { useState } from "react";
 import useCountdown from "./useCountdown";
 import { useAuth } from "@/contexts/authContext";
 
-
-
 export default function useEmailVerification() {
   const { signup } = useAuth();
 
+  const [email, setEmail] = useState("");
 
-  const [email,setEmail] = useState("");
+  const [name, setName] = useState("");
 
-  const [name,setName] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [password,setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  const [message, setMessage] = useState("");
 
-  const [loading,setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const [message,setMessage] = useState("");
+  const { countdown, startCountdown, canResend } = useCountdown(60);
 
-  const [error,setError] = useState("");
-
-
-
-  const {
-    countdown,
-    startCountdown,
-    canResend
-
-  } = useCountdown(60);
-
-
-
-
-
-  const handleSubmit = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-
-
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
 
     setError("");
 
     setMessage("");
 
-
-
-    if(!canResend){
-
-      setError(
-        `Please wait ${countdown}s before trying again`
-      );
+    if (!canResend) {
+      setError(`Please wait ${countdown}s before trying again`);
 
       return;
-
     }
-
-
 
     setLoading(true);
 
+    try {
+      const deviceId = crypto.randomUUID();
+      await signup(name, email, password, deviceId);
 
-
-    try{
-
-
-      await signup(
-        name,
-        email,
-        password
-      );
-
-
-
-      setMessage(
-        "Account created. Check your email to verify your account."
-      );
-
-
+      setMessage("Account created. Check your email to verify your account.");
 
       startCountdown();
-
-
-
-    }catch(error: unknown){
-
-
-      if(error instanceof Error){
-
+    } catch (error: unknown) {
+      if (error instanceof Error) {
         setError(error.message);
-
-      }else{
-
-        setError(
-          "Signup failed"
-        );
-
+      } else {
+        setError("Signup failed");
       }
-
-
-    }finally{
-
+    } finally {
       setLoading(false);
-
     }
-
   };
 
-
-
-
   return {
-
     name,
     setName,
 
@@ -126,21 +64,16 @@ export default function useEmailVerification() {
     password,
     setPassword,
 
-
     loading,
 
     message,
 
     error,
 
-
     countdown,
 
     canResend,
 
-
-    handleSubmit
-
+    handleSubmit,
   };
-
 }
