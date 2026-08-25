@@ -1,6 +1,6 @@
 "use client";
 
-import { X, LogOut } from "lucide-react";
+import { X, LogOut, User, Store, Shield } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/authContext";
@@ -58,13 +58,32 @@ export default function HamburgerMenu({ isOpen, onClose }: HamburgerMenuProps) {
             <div className="absolute w-[80%] bottom-23 flex flex-col gap-3">
               {user ? (
                 <>
+                  <Link
+                    href="/dashboard"
+                    onClick={onClose}
+                    className="w-full flex items-center justify-center gap-2 py-3 border border-gray-200 text-gray-700 rounded-xl font-semibold"
+                  >
+                    <User size={16} />
+                    My Account
+                  </Link>
                   {user.role === "seller" && (
                     <Link
                       href="/seller/dashboard"
                       onClick={onClose}
-                      className="w-full text-center py-3 border border-emerald-700 text-emerald-700 rounded-xl font-semibold"
+                      className="w-full flex items-center justify-center gap-2 py-3 border border-emerald-700 text-emerald-700 rounded-xl font-semibold"
                     >
+                      <Store size={16} />
                       Seller Dashboard
+                    </Link>
+                  )}
+                  {user.role === "admin" && (
+                    <Link
+                      href="/admin"
+                      onClick={onClose}
+                      className="w-full flex items-center justify-center gap-2 py-3 border border-purple-300 text-purple-700 rounded-xl font-semibold"
+                    >
+                      <Shield size={16} />
+                      Admin Panel
                     </Link>
                   )}
                   <button

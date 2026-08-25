@@ -6,7 +6,9 @@ import {
   Menu,
   User,
   Package,
+  Store,
   LogOut,
+  Shield,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -22,10 +24,10 @@ interface HeaderProps {
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "Categories", href: "/dashboard/categories" },
-  { label: "New Arrivals", href: "/dashboard/new-arrivals" },
-  { label: "Sale", href: "/dashboard/sale" },
-  { label: "About", href: "/dashboard/about" },
+  { label: "Categories", href: "/categories" },
+  { label: "New Arrivals", href: "/new-arrivals" },
+  { label: "Sale", href: "/sale" },
+  { label: "About", href: "/about" },
 ];
 
 export default function Header({
@@ -133,13 +135,29 @@ export default function Header({
                   My Orders
                 </Link>
                 {user.role === "seller" && (
-                  <Link
-                    href="/seller/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                  >
-                    <Package size={16} />
-                    Seller Dashboard
-                  </Link>
+                  <>
+                    <hr className="my-1" />
+                    <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wide">Seller Center</p>
+                    <Link
+                      href="/seller/dashboard"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-emerald-700 font-medium hover:bg-emerald-50"
+                    >
+                      <Store size={16} />
+                      Seller Dashboard
+                    </Link>
+                  </>
+                )}
+                {user.role === "admin" && (
+                  <>
+                    <hr className="my-1" />
+                    <Link
+                      href="/admin"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-purple-700 font-semibold hover:bg-purple-50"
+                    >
+                      <Shield size={16} />
+                      Admin Panel
+                    </Link>
+                  </>
                 )}
                 <hr className="my-2" />
                 <button

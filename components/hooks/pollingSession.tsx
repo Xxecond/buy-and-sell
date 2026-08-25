@@ -24,6 +24,8 @@ export const Polling = () => {
   useEffect(() => () => stopPolling(), []);
 
   const startPolling = (deviceId: string) => {
+    setError("")
+
     setPolling(true);
 
     intervalRef.current = setInterval(async () => {
@@ -34,7 +36,7 @@ export const Polling = () => {
         stopPolling();
         setPolling(false);
         if (result.user) loginWithToken(result.user);
-        router.push("/dashboard");
+        router.push("/");
       }
     }, 2000);
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/authContext";
 import { Button } from "@/components/ui/button";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, TriangleAlert, } from "lucide-react";
 import Link from "next/link";
 
 type LoginFormProps = {
@@ -25,14 +25,14 @@ export default function LoginForm({ className }: LoginFormProps) {
 
     try {
       await login(email, password);
-      router.push("/dashboard");
+      router.push("/");
     } catch (err: unknown) {
       setError(typeof err === "string" ? err : "Login failed");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`space-y-4 ${className}`}>
+    <form onSubmit={handleSubmit} className={`w-5/6 flex flex-col space-y-5 ${className}`}>
       <label className="text-sm md:text-base">Email</label>
       <input
         type="email"
@@ -74,8 +74,10 @@ export default function LoginForm({ className }: LoginFormProps) {
           signup
         </Link>
       </div>
+      {error && <div className="flex items-center gap-3 bg-red-50 border border-emerald-200 rounded-xl p-2">
+            <TriangleAlert className="text-red-600 shrink-0" size={20} /><p className="text-red-600 text-sm">{error}</p>
+            </div>}
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
       <Button
         type="submit"
         disabled={loading}

@@ -2,17 +2,29 @@
 
 import Link from "next/link";
 import { ArrowLeftSquareIcon, CheckCircle, XCircle } from "lucide-react";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useAuth } from "@/contexts/authContext";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
 
+  const router = useRouter();
+  const { loginWithToken } = useAuth();
+
   const success = searchParams.get("success");
+  const token = searchParams.get("token");
   const error = searchParams.get("error");
 
   const isSuccess = success === "true";
   const errorMessage = error ? decodeURIComponent(error) : null;
+
+  useEffect(() => {
+    if (isSuccess && token) {
+      loginWithToken(JSON.parse(atob(token.split(".")[1])));
+      router.push("/dashboard");
+    }
+  }, [isSuccess, token]);
 
   return (
     <section className="relative flex min-h-screen w-full items-center justify-center bg-white px-6">

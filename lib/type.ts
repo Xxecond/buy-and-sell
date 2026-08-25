@@ -1,10 +1,14 @@
 export type User = {
-    id:number;
-    email: string;
-    name: string;
-    role: string;
+  id: number;
+  email: string;
+  name: string;
+  role: string;
 };
 
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
 export type LoginResponse = {
   message: string;
   user: User;
@@ -24,22 +28,24 @@ export type ResendVerificationResponse = {
   message: string;
 };
 
-
 export type ApiError = {
-    error?: string;
-    message?: string;
+  error?: string;
+  message?: string;
 };
 
 export type Layout = {
-    children: React.ReactNode;
-}
+  children: React.ReactNode;
+};
 
 export type CartItem = {
-  id:number;
-  name:string;
-  price:number;
-  size:string;
-  color:string;
-  quantity:number;
-  image:string;
+  id: number;
+  name: string;
+  price: number;
+  size: string;
+  color: string;
+  quantity: number;
+  image: string;
 };
+
+export type Size = 
+    "sm"| "md"| "lg";

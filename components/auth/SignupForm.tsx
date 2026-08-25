@@ -2,10 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui";
-import { EyeIcon, EyeOffIcon, Mail } from "lucide-react";
+import {
+  EyeIcon,
+  EyeOffIcon,
+  Mail,
+  TriangleAlert,
+  MessageSquare,
+} from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/authContext";
 import { Polling } from "../hooks/pollingSession";
+import Spinner from "../ui/Spinner";
 
 export default function SignupForm() {
   const [email, setEmail] = useState("");
@@ -15,7 +22,7 @@ export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
-  const {signup,loading} =useAuth();
+  const { signup, loading } = useAuth();
   const { startPolling, polling } = Polling();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,7 +39,9 @@ export default function SignupForm() {
 
     try {
       const data = await signup(name, email, password, deviceId);
-      setMessage(data.message || "An email has been sent! click to verify account.");
+      setMessage(
+        data.message || "An email has been sent! click to verify account.",
+      );
       setName("");
       setPassword("");
       setConfirmPassword("");
@@ -82,7 +91,11 @@ export default function SignupForm() {
           onClick={() => setShowPassword(!showPassword)}
           className="text-black absolute translate-x-1/2 right-10 top-1/2 -translate-y-1/2"
         >
-          {showPassword ? <EyeIcon className="w-6 h-6 md:w-8 md:h-8" /> : <EyeOffIcon className="w-6 h-6 md:w-8 md:h-8" />}
+          {showPassword ? (
+            <EyeIcon className="w-6 h-6 md:w-8 md:h-8" />
+          ) : (
+            <EyeOffIcon className="w-6 h-6 md:w-8 md:h-8" />
+          )}
         </button>
       </div>
 
@@ -103,37 +116,53 @@ export default function SignupForm() {
             onClick={() => setShowPassword(!showPassword)}
             className="text-black absolute translate-x-1/2 right-10 top-1/2 -translate-y-1/2"
           >
-            {showPassword ? <EyeIcon className="w-6 h-6 md:w-8 md:h-8" /> : <EyeOffIcon className="w-6 h-6 md:w-8 md:h-8" />}
+            {showPassword ? (
+              <EyeIcon className="w-6 h-6 md:w-8 md:h-8" />
+            ) : (
+              <EyeOffIcon className="w-6 h-6 md:w-8 md:h-8" />
+            )}
           </button>
         </div>
       </div>
 
       <div className="flex space-x-2 md:space-x-3">
         <p className="text-xs md:text-sm">have an account?</p>
-        <Link href="/auth/login" className="flex-1 text-emerald-600 text-xs md:text-sm">
+        <Link
+          href="/auth/login"
+          className="flex-1 text-emerald-600 text-xs md:text-sm"
+        >
           login
         </Link>
-        <Link href="/auth/resend-verification" className="text-emerald-600 text-xs md:text-sm">
+        <Link
+          href="/auth/resend-verification"
+          className="text-emerald-600 text-xs md:text-sm"
+        >
           resend email
         </Link>
       </div>
 
-      {error && <p className="text-red-600 text-sm">{error}</p>}
-
-      {polling && (
-        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-          <Mail className="text-emerald-600 shrink-0" size={20} />
-          <div>
-            <p className="text-emerald-700 font-medium text-sm">Check your email</p>
-            <p className="text-emerald-600 text-xs mt-0.5">
-              {message}
-            </p>
-          </div>
-          <div className="ml-auto w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin shrink-0" />
+      {error && (
+        <div className="flex items-center gap-3 bg-red-50 border border-emerald-200 rounded-xl p-2">
+          <TriangleAlert className="text-red-600 shrink-0" size={20} />
+          <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
-      {!polling && message && <p className="text-green-600 text-sm">{message}</p>}
+      {polling && (
+        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-2">
+          <Mail className="text-emerald-600 shrink-0" size={20} />
+          <div>
+            <p className="text-emerald-600 text-xs">{message}</p>
+          </div>
+        </div>
+      )}
+
+      {!polling && message && (
+        <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-2">
+          <MessageSquare className="text-emerald-600 shrink-0" size={20} />{" "}
+          <p className="text-green-600 text-sm">{message}</p>
+        </div>
+      )}
 
       <Button
         type="submit"
@@ -141,7 +170,16 @@ export default function SignupForm() {
         disabled={loading || polling}
         className="w-full"
       >
-        {loading ? "Creating account..." : polling ? "Waiting for verification..." : "Signup"}
+        {loading ? (<>
+          Creating account...
+        </>) : polling ? (
+          <>
+            Waiting for verification...
+            <Spinner size="sm" color="text-white" />
+          </>
+        ) : (
+          "Signup"
+        )}
       </Button>
     </form>
   );

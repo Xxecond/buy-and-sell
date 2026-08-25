@@ -8,14 +8,9 @@ import {
   ReactNode,
 } from "react";
 
-import { User, SignupResponse, } from "@/lib/type";
+import { User, SignupResponse, ResendVerificationResponse } from "@/lib/type";
 
-import {
-  loginUser,
-  signupUser,
-  logoutUser,
-  getCurrentUser,
-  } from "@/lib/auth";
+import { loginUser, signupUser, logoutUser, getCurrentUser, resendVerificationEmail } from "@/lib/auth";
 
 type AuthContextType = {
   user: User | null;
@@ -27,6 +22,10 @@ type AuthContextType = {
     password: string,
     deviceId: string,
   ) => Promise<SignupResponse>;
+  resendEmail: (
+    email: string,
+    deviceId: string,
+  ) => Promise<ResendVerificationResponse>;
   loginWithToken: (userData: User) => void;
   logout: () => Promise<void>;
 };
@@ -118,6 +117,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  
+const resendEmail = async (
+    email: string,
+    deviceId: string,
+  ) => {
+    setLoading(true);
+    try {
+      const data = await resendVerificationEmail( email, deviceId);
+      return data;
+    } finally {
+      setLoading(false);
+    }
+  };
   // Called by SignupForm polling once verification is confirmed
   const loginWithToken = (userData: User) => {
     persistUser(userData);
@@ -132,7 +144,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, signup, loginWithToken, logout }}
+      value={{ user, loading, login, signup, resendEmail, loginWithToken, logout }}
     >
       {children}
     </AuthContext.Provider>

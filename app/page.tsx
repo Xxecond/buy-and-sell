@@ -28,7 +28,7 @@ function HeroSlider() {
   return (
     <section className={`bg-gradient-to-r ${slide.bg} px-6 lg:px-20 py-10 lg:py-20 flex items-center justify-between min-h-[45vh] lg:min-h-[55vh] relative overflow-hidden`}>
       <div className="flex-1 z-10 max-w-lg">
-        <h1 className="text-3xl lg:text-5xl font-bold text-gray-800 leading-tight mb-3">{slide.title}</h1>
+        <h1 className="text-3xl lg:text-5xl font-bold text-gray-800 leading-tight mb-3 shrink-0 ">{slide.title}</h1>
         <p className="text-gray-500 text-sm lg:text-base mb-6">{slide.subtitle}</p>
         <Button variant="default" size="lg" asChild>
           <Link href="/categories">Shop Now</Link>
@@ -175,8 +175,7 @@ function FeaturedProducts() {
                 </div>
                 <Button
                   size="sm"
-                  className="hidden lg:block"
-                  variant="default"
+                  variant="special"
                   onClick={() => addToCart({ id: i, name: p.name, price: parseInt(p.price.replace(/[^0-9]/g, "")), size: "", color: "", quantity: 1, image: "" })}
                 >
                   Add to Cart
@@ -260,7 +259,7 @@ function Reviews() {
 function Newsletter() {
   const [email, setEmail] = useState("");
   return (
-    <section className="flex bg-gray-200 rounded-2xl p-2 text-black items-center gap-3 ">
+    <section className="flex rounded-2xl p-2 text-black items-center gap-3 ">
       <div className="  flex items-center gap-2">
         <Mail size={36} className=" text-white bg-emerald-700 px-1 shrink-0" />
         <div>
@@ -273,7 +272,7 @@ function Newsletter() {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-3/4  focus:outline-none ring-black ring focus:ring-2 p-2 rounded-lg"
+          className="w-3/4  focus:outline-none ring-black ring focus:ring-2  px-2 rounded-lg"
         />
         <Button variant="special" className=" whitespace-nowrap">
           Subscribe

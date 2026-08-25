@@ -4,17 +4,17 @@ import { useState } from "react";
 import { Button } from "@/components/ui";
 import useCountdown from "@/components/hooks/useCountdown";
 import { resendVerificationEmail } from "@/lib/auth";
+import Spinner from "../ui/Spinner";
 import { Polling } from "@/components/hooks/pollingSession";
-import { Mail } from "lucide-react";
+import { Mail, MessageSquare, TriangleAlert } from "lucide-react";
 
 export default function ResendForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const { countdown, startCountdown, canResend } = useCountdown(60);
-  const { startPolling, polling, error: pollingError } = Polling();
-
+  const { startPolling, polling } = Polling();
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -23,30 +23,24 @@ export default function ResendForm() {
     setError("");
     setMessage("");
 
-    if (!canResend) {
-      setError(`Please wait ${countdown}s before trying again`);
-      return;
-    }
-
     setLoading(true);
 
     try {
       const deviceId = crypto.randomUUID();
-      await resendVerificationEmail(email, deviceId);
-      setMessage("If this email exists, a verification link has been sent.");
-      startCountdown();
+      const data = await resendVerificationEmail(email, deviceId);
+      setMessage(data.message);
       startPolling(deviceId);
     } catch (err: unknown) {
-      setError(typeof err === "string" ? err : "Failed to send verification email");
+      setError(
+        typeof err === "string" ? err : "Failed to send verification email",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const displayError = error || pollingError;
-
   return (
-    <div className="w-full">
+    <div className="w-5/6 flex flex-col space-y-5">
       <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
         <p className="text-sm text-gray-600 text-center">
           Enter email for verification link.
@@ -64,31 +58,40 @@ export default function ResendForm() {
           disabled={polling}
         />
 
-        {displayError && (
-          <div className="w-full flex justify-center">
-            <p className="text-red-500 text-sm text-center">{displayError}</p>
+        {error && (
+          <div className="flex items-center gap-3 bg-red-50 border border-emerald-200 rounded-xl p-2">
+            <TriangleAlert className="text-red-600 shrink-0" size={20} />
+            <p className="text-red-600 text-sm">{error}</p>
           </div>
         )}
 
         {polling && (
-          <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+          <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-2">
             <Mail className="text-emerald-600 shrink-0" size={20} />
             <div>
-              <p className="text-emerald-700 font-medium text-sm">Check your email</p>
               <p className="text-emerald-600 text-xs mt-0.5">{message}</p>
             </div>
-            <div className="ml-auto w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin shrink-0" />
           </div>
         )}
 
         {!polling && message && (
-          <div className="w-full flex justify-center">
+          <div className="flex items-center gap-3 bg-emerald-50 border border-emerald-200 rounded-xl p-2">
+            <MessageSquare className="text-emerald-600 shrink-0" size={20} />
             <p className="text-green-600 text-sm text-center">{message}</p>
           </div>
         )}
 
-        <Button variant="special" disabled={!canResend || loading || polling}>
-          {!canResend ? `Resend in ${countdown}s` : loading ? "Sending..." : polling ? "Waiting for verification..." : "Send email"}
+        <Button variant="special" disabled={loading || polling}>
+          {loading ? (
+            "Sending..."
+          ) : polling ? (
+            <>
+              Waiting for verification...
+              <Spinner size="sm" color="text-green" />
+            </>
+          ) : (
+            "Send email"
+          )}
         </Button>
       </form>
     </div>
