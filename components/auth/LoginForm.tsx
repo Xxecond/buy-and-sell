@@ -25,7 +25,7 @@ export default function LoginForm({ className }: LoginFormProps) {
 
     try {
       await login(email, password);
-      router.push("/");
+      router.push("/dashboard");
     } catch (err: unknown) {
       setError(typeof err === "string" ? err : "Login failed");
     }
