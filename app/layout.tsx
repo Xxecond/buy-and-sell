@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <LayoutShell className="max-w-7x1 mx-auto px-6">{children}</LayoutShell>
+              <LayoutShell >{children}</LayoutShell>
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>
